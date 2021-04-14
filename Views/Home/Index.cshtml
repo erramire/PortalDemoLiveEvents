@@ -1,0 +1,79 @@
+﻿@{
+    ViewData["Title"] = "Grupo Bimbo - Demo Live Events";
+}
+
+<div class="text-center" style="text-align: center">
+    <h1 class="display-4">Demo Live Events</h1>
+    <p>Seleccione el idioma de su preferencia: </p>
+    <div style=" font-style:">
+        <b>Español</b>
+        <label class="switch">
+            <input id="languagecbx" type="checkbox" onclick="checkLanguage()">
+            <span class="slider round"></span>
+        </label>
+        <b>English</b>
+    </div>
+    <div style="text-align: center">
+
+        <video id="vid1" class="azuremediaplayer amp-default-skin" style="width:100%; margin:0 auto; text-align:center" autoplay controls>
+            @*<source id="src1" src="https://robcerevents-usso.streaming.media.azure.net/4131ff70-32f9-40bf-9260-5603dd8962c2/6e08a0d5-f4e6-416b-8bb3-5470b916de61.ism/manifest" type="application/vnd.ms-sstr+xml" />*@
+            <source id="src1" src="https://robcerevents-usso.streaming.media.azure.net/cdedc5ba-c643-46bd-97d3-516f08d36319/115bf534-f529-44b6-bcc7-da38612933a0.ism/manifest" type="application/vnd.ms-sstr+xml" />
+            <p class="amp-no-js">
+                Para ver este video por favor habilite JavaScript y considere actualizar su navergador web, para soporte video con HTML 5
+            </p>
+        </video>
+
+
+    </div>
+    <label id="languageSelected">Español</label>
+</div>
+<script>
+    var myPlayer = amp('vid1', { /* Options */
+        techOrder: ["azureHtml5JS", "flashSS", "html5FairPlayHLS", "silverlightSS", "html5"],
+        "nativeControlsForTouch": false,
+        autoplay: true,
+        controls: true,
+        width: "800",
+        height: "600",       
+        poster: ""
+    }, function () {
+        console.log('Good to go!');
+        // add an event listener
+        this.addEventListener('ended', function () {
+            console.log('Finished!');
+        });
+    }
+    );
+    myPlayer.src([{
+        //src: "https://robcerevents-usso.streaming.media.azure.net/4131ff70-32f9-40bf-9260-5603dd8962c2/6e08a0d5-f4e6-416b-8bb3-5470b916de61.ism/manifest",
+        src:"https://robcerevents-usso.streaming.media.azure.net/cdedc5ba-c643-46bd-97d3-516f08d36319/115bf534-f529-44b6-bcc7-da38612933a0.ism/manifest",
+        type: "application/vnd.ms-sstr+xml"
+    }]);
+
+    function checkLanguage() {
+        var checkbox = document.getElementById('languagecbx');
+        var language = "";
+        if (checkbox.checked) {
+            myPlayer.src([{
+                src: "https://endpoint2-robcerevents-usso.streaming.media.azure.net/ea796b23-37fb-40b7-af36-665bff6c95a7/42d4dee5-5dda-4c26-905a-3814b7ffd665.ism/manifest",
+                type: "application/vnd.ms-sstr+xml"
+            }]);
+            language = "English";
+            
+        } else {
+            myPlayer.src([{
+                //src: "https://robcerevents-usso.streaming.media.azure.net/4131ff70-32f9-40bf-9260-5603dd8962c2/6e08a0d5-f4e6-416b-8bb3-5470b916de61.ism/manifest",
+                src: "https://robcerevents-usso.streaming.media.azure.net/cdedc5ba-c643-46bd-97d3-516f08d36319/115bf534-f529-44b6-bcc7-da38612933a0.ism/manifest",
+                type: "application/vnd.ms-sstr+xml"
+            }]);
+            language = "Español";
+        }
+        
+        myPlayer.load();
+        myPlayer.play();
+        document.getElementById('languageSelected').innerHTML = language;
+        //alert(language);
+
+        
+    }
+</script>
