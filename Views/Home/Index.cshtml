@@ -4,14 +4,16 @@
 
 <div class="text-center" style="text-align: center">
     <h1 class="display-4">Demo Live Events</h1>
-    <p>Seleccione el idioma de su preferencia: </p>
+    
     <div style=" font-style:">
-        <b>Español</b>
-        <label class="switch">
-            <input id="languagecbx" type="checkbox" onclick="checkLanguage()">
-            <span class="slider round"></span>
-        </label>
-        <b>English</b>
+        Seleccione la fuente de su preferencia:
+        <select name="origins" id="cbxorigins" onchange="checkLanguage()">
+            <option value="original">Original</option>
+            <option value="esp">Español</option>
+            <option value="eng">English</option>
+        </select>
+        <br />
+        <br />
     </div>
     <div style="text-align: center">
 
@@ -24,7 +26,7 @@
 
 
     </div>
-    <label id="languageSelected">Español</label>
+    <label id="languageSelected">Original</label>
 </div>
 <script>
     var myPlayer = amp('vid1', { /* Options */
@@ -49,22 +51,29 @@
     }]);
 
     function checkLanguage() {
-        var checkbox = document.getElementById('languagecbx');
+        var checkbox = document.getElementById('cbxorigins');
+        var valuecbx = checkbox.value;
+        var url = "";
         var language = "";
-        if (checkbox.checked) {
-            myPlayer.src([{
-                src: "@ViewBag.EnglishSource",
-                type: "application/vnd.ms-sstr+xml"
-            }]);
-            language = "English";
-
-        } else {
-            myPlayer.src([{
-                src: "@ViewBag.SpanishSource",
-                type: "application/vnd.ms-sstr+xml"
-            }]);
-            language = "Español";
+        switch (valuecbx) {
+            case "esp":
+                url = "@ViewBag.SpanishSource";
+                language = "Español";
+                break;
+            case "eng":
+                url = "@ViewBag.EnglishSource";
+                language = "English";
+                break;
+            default:
+                url = "@ViewBag.OriginalSource";
+                language = "Original";
+                break;
         }
+
+        myPlayer.src([{
+            src: url,
+            type: "application/vnd.ms-sstr+xml"
+        }]);
 
         myPlayer.load();
         myPlayer.play();
